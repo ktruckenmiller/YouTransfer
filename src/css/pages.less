@@ -4,7 +4,21 @@
 .hp {
 	margin: 40px 5px 80px 5px;
 	min-height: 450px;
-	background-color: #fff;
+}
+@media (min-width:768px) {
+	.container {
+		width:100%;
+		.jumbotron {
+			padding-left:10px;
+			padding-right:10px;
+		}
+	}
+}
+@media (min-width:1020px) {
+	.container {
+		max-width:960px;
+	}
+	
 }
 
 .hp::after, 
@@ -18,31 +32,170 @@
 }
 
 .hp header {
+	text-align:center;
 	margin-bottom: 20px;
-}
-
-@media (min-width: @screen-md-min) {
-	.hp.jumbotron {
-		padding: 40px 80px;
+	h2 {
+		font-size:22px;
 	}
 }
+.jumbotron {
+	background-color:transparent;
+}
+.logo {
+	width: 226px;
+    overflow: hidden;
+    display: block;
+    margin: 0 auto;
+}
+
+
 
 @media (max-width: @screen-xs-min) {
 	.hp.jumbotron {
 		padding: 20px;
 	}
 }
-
+.index_container {
+	text-align:center;
+}
 .hp .dropzone {
-	margin-top: 20px;
+	width:100%;
+	margin: 0 auto 0 auto;
+    display:inline-block;
+    min-height:100px;
+    background-color:transparent;
+    border:2px dashed @gray;
+    border-radius:0;
+	
+
+	@media (min-width:768px) {
+		max-width: 48%;
+	}
+    
+
+}
+.hp .dz-completed-container {
+	display:none;
+	&.dz-upload-complete {
+		display:block;
+	}
+}
+.hp .dz-upload-complete {
+	width:100%;
+	float:left;
+
+	
+	text-align:left;
+
+	@media (min-width:768px) {
+		max-width:48%;
+		margin-left:4%;
+	}
+	input, textarea {
+		border:2px solid @off_gray;
+		border-radius:1px;
+		color:@dark_gray;
+	}
+	.btn {
+		border:none;
+		background-color:@blue;
+		color:white;
+		text-transform:lowercase;
+	}
+	
+	h2 {
+		font-size:14px;
+
+	}
 }
 
+.hp .dz-files-added {
+	border:2px solid @off_gray;
+	border-radius:1px;
+	margin-top: 45px;
+	float:left;
+	text-align:left;
+	background-color:white;
+}
+.hp .dz-preview-bundle {
+	padding-left:20px;
+	.glyphicon-download-alt {
+		margin-right:6px;
+	}
+}
 .hp .dz-preview-template {
+	background-color:rgb(248,248,249);
 	margin-top: 25px;
+	> div {
+		position:relative;
+		overflow:hidden;
+	}
+}
+.hp .dz-preview-item {
+	position:relative;
+	display:block;
+	&:nth-child(2n) {
+		background-color:white;
+	}
+
+}
+.hp {
+	.dz-preview-result {
+		margin-top:4px;
+	}
+}
+
+.hp {
+	.dz-clickable {
+		display:inline-block;
+	}
+	.dz-action-add {
+		.progress-bar {
+			background-color:@blue;
+		}
+	}
+}
+.hp {
+	.dropzone.dz-files-added {
+		display:block;
+		.text-success {
+			.glyphicon {
+				margin-right:6px;
+			}
+		}
+		.dz-preview-template {
+			a {
+				color:@blue;
+			}
+			margin-bottom:0px;
+			.dz-preview-description {
+				padding:15px 20px 15px 20px;
+			}
+		}
+	}
+	.dz-message {
+		color:@dark_gray;
+		.glyphicon {
+			color:@blue;
+		}
+
+	}
+	.dz-preview-template.table .dz-preview-item .dz-preview-progress {
+		position: absolute;
+	    top: 50%;
+	    right: 0;
+	    transform: translateY(-50%);
+	}
+	.dz-preview-template.table .dz-preview-item {
+		display:block;
+	}
 }
 
 .hp .dropzone .dz-preview-template {
 	margin-top: 0;
+}
+.hp .dz-processing {
+	color:black;
 }
 
 .hp .fallback {
@@ -127,6 +280,10 @@ For those users the experience will be less intuitive.
 	background-color: #eee;
 	min-height: 450px;
 	border-radius: 4px;
+	color:black;
+	input {
+		color:@dark_gray;
+	}
 }
 
 .settings::after, 

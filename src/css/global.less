@@ -1,19 +1,39 @@
 
 body { 
-	background-color: #000000;
-	background-image: url("../assets/204H.jpg");
-	background-position: 0 0;
+	background-color: white;
+	/** background-image: url("../assets/204H.jpg");
+	
+	background-position: 0 0;**/
+	font-family: "Akzidenz Grotesk",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+	color:@blue;
+	
 	background-repeat: no-repeat;
 	background-size: 100%;
-	font-family: "kulturista-web"; 
 }
 
 /*// ------------------------------------------------------------------------------------------ Header */
 
 nav.navbar.navbar-inverse {
-	background-color: #000;
+	background-color:transparent;
+	border:none;
+	a {
+		padding-left:20px;
+		letter-spacing:1px;
+		color:@light_gray;
+		transition: all .1s ease-in-out;
+		&:hover {
+			color:@dark_gray;
+		}
+	}
+}
+h1 {
+	text-transform:lowercase;
 }
 
 nav.navbar .navbar-brand {
 	font-size: 10px;
+}
+.settings_font {
+	font-size:12px;
+	text-transform:lowercase;
 }

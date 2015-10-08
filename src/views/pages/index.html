@@ -3,11 +3,14 @@
 {% block content %}
 <div class="hp jumbotron {{"col-md-6" if not enableDownload }}" id="hp">
 	<header class="col-md-12">
-		<h1>{{ title | safe }}</h1>
+		<a class="logo" href="/" title="monosend">
+			<img src="/assets/monosend_logo.svg" alt="Monosend">
+		</a>
+		<!-- <h1>{{ title | safe }}</h1> -->
 		<h2>{{ subtitle | safe }}</h2>
 	</header>
 
-	<div class="{{ "col-md-6" if success and enableDownload else "col-md-12" }}">
+	<div class="index_container {{ "col-md-12" if success and enableDownload else "col-md-12" }}">
 		{%if isPostback %}
 
 			{% if success %}
@@ -28,26 +31,20 @@
 		{% include "fileupload.html" %}
 
 		{% endif %}
-	</div>
+		{% if success %}
+		<div class="dz-completed-container">
 
-	{% if success %}
-	<div class="{{"col-md-6" if enableDownload else "col-md-12" }} dz-completed-container">
+			{%if isPostback %}
 
-		{%if isPostback %}
+				{% include "sendmail.html" %}
 
-			{% include "sendmail.html" %}
+			
 
-		{% elif enableDownload %}
-
-		<div class="separator text-center">
-			<h6 class="separator-text"><em>or</em></h6>
-			<hr class="separator-ruler visible-xs-block visible-sm-block" />
+			{% endif %}
 		</div>
-
-		{% include "gettoken.html" %}
-
 		{% endif %}
 	</div>
-	{% endif %}
+
+	
 </div>
 {% endblock %}

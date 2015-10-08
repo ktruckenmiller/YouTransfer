@@ -83,7 +83,7 @@ function browserifyTask(bundler, src) {
 }
 
 function copyStaticTask() {
-	gulp.src(paths.bootstrap + '/**/*', {base: paths.bootstrap})
+	gulp.src([paths.bootstrap + '/**/*', './src/fonts/**/*'], {base: paths.bootstrap})
 		.pipe(filter(['**/fonts/**']))
 		.on('error', log)
 		.pipe(gulp.dest(paths.dist));
