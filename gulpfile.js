@@ -46,6 +46,7 @@ gulp.task('build', ['browserifyAppTask', 'browserifyVendorTask', 'copyStaticTask
 gulp.task('dist', ['build']);
 gulp.task('test', function(callback) {
 	/**runSequence('testModulesTask', 'testComponentsTask', 'testViewsTask', 'testTerminationTask', callback);**/
+	callback();
 });
 
 gulp.task('watch', ['dist'], function() {
