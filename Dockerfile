@@ -1,7 +1,7 @@
 FROM node:0.12
 
-MAINTAINER Remie Bolte (r.bolte@gmail.com)
-LABEL version="1.0.4"
+MAINTAINER Kevin Truckenmiller (kevin.truckenmiller@mono-1.com)
+LABEL version="1.0.5"
 
 VOLUME /opt/youtransfer/uploads
 
