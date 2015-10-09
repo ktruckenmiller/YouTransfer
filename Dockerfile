@@ -6,8 +6,8 @@ LABEL version="1.0.4"
 VOLUME /opt/youtransfer/uploads
 
 WORKDIR /opt/youtransfer/
-RUN npm install youtransfer -g
-RUN youtransfer init
+RUN npm install monosend -g
+RUN monosend init
 RUN npm install
 
 CMD npm start
