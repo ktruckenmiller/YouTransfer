@@ -1,6 +1,6 @@
 {
   "name": "monosend",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "monosend, the self-hosted file transfer solution",
   "main": "app.js",
   "engines": {
@@ -35,7 +35,7 @@
   "scripts": {
     "dist": "gulp clean && gulp dist",
     "dev": "gulp clean && gulp watch",
-    "start": "gulp clean && gulp dist && node app.js",
+    "start": "gulp clean && gulp dist && node --max_old_space_size=8192 app.js",
     "app": "node app.js",
     "test": "gulp test"
   },

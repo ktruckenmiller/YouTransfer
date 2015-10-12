@@ -29,6 +29,7 @@ var DROPZONE_ACTIONS_ADD_SELECTOR = '.dz-action-add';
 // ------------------------------------------------------------------------------------------ Component Definition
 
 function Fileupload(element) {
+	console.log(element);
 	var component = this;
 	component.$element = $(element);
 	component.$element.addClass(DROPZONE_CLASS);
