@@ -28,6 +28,7 @@ node_modules
 dist
 uploads
 settings.json
+config.json
 test/unit-test-coverage
 youtransfer.sublime-project
 youtransfer.sublime-workspace
