@@ -94,3 +94,42 @@
 	border: none;
 	border-bottom: 1px solid #eee;
 }
+
+.hp {
+	.dz-preview-template.table {
+
+		.dz-preview-item.dz-filing {
+			.dz-preview-progress {
+				display:block;
+				.progress-striped {
+					position:relative;
+					&:after {
+						content: "processing";
+						color: #fff;
+						display: block;
+						position: absolute;
+						left: 14px;
+						top: 1px;
+						font-size: 12px;
+					}
+				}
+				.progress-bar {
+					background-color:@light_gray;
+					box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
+				}
+			}
+		}
+	}
+}
+.dz-completed-container {
+	form {
+		.btn {
+			transition: background-color .2s ease-in-out;
+		}
+		.btn.loading {
+			color:white;
+			background-color:@light_gray;
+		}
+	}	
+}
+

@@ -1,6 +1,6 @@
 {
   "name": "monosend",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "monosend, the self-hosted file transfer solution",
   "main": "app.js",
   "engines": {
@@ -82,6 +82,7 @@
     "run-sequence": "^1.1.4",
     "selenium-standalone": "^4.6.3",
     "sinon": "^1.16.1",
+    "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"

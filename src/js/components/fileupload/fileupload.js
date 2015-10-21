@@ -1,7 +1,7 @@
 'use strict';
 
 // ------------------------------------------------------------------------------------------ Component Dependencies
-
+var _ = require('underscore');
 var $ = require('jquery');
 var uuid = require('uuid');
 var Dropzone = require('dropzone');
@@ -29,7 +29,6 @@ var DROPZONE_ACTIONS_ADD_SELECTOR = '.dz-action-add';
 // ------------------------------------------------------------------------------------------ Component Definition
 
 function Fileupload(element) {
-	console.log(element);
 	var component = this;
 	component.$element = $(element);
 	component.$element.addClass(DROPZONE_CLASS);
@@ -49,7 +48,13 @@ function Fileupload(element) {
 	component.completeTemplate = component.$element.find(DROPZONE_UPLOAD_COMPLETE_SELECTOR);
 	component.completeTemplate = component.completeTemplate.detach().html();
 	component.$completedContainer = $(DROPZONE_COMPLETED_CONTAINER_SELECTOR);
-
+	var displayEmailer = _.once(function() {
+		component.$completedContainer.html(component.completeTemplate).addClass(DROPZONE_UPLOAD_COMPLETE_CLASS);
+		
+		component.$completedContainer.find('.btn.loading').attr('disabled', true);
+		console.log(component.$completedContainer.find('.btn.loading'));
+		// .find('.btn.loading').attr('disabled', 'disabled');
+	});
 	$.getJSON('/settings/dropzone').done(function(settings) {
 		var options = $.extend({
 			url: '/upload',
@@ -70,10 +75,21 @@ function Fileupload(element) {
 			});
 
 			component.dropzone.on("sending", function(file, xhr, formData) {
+				//disable the send button
 				formData.append("bundle", component.bundle.id);
+				displayEmailer();
 			});
-
+			component.dropzone.on("uploadprogress", function(result, progress) {
+				if(progress === 100) {
+					setTimeout(function() {
+						result.previewElement.classList.add("dz-filing");
+					}, 500);
+				}
+				
+				
+			});
 			component.dropzone.on("complete", function(result) {
+				
 				$(result.previewElement).find(DROPZONE_PREVIEW_DESCRIPTION_SELECTOR).removeClass('col-md-7');
 				$(result.previewElement).find(DROPZONE_PREVIEW_PROGRESS_SELECTOR).hide();
 				if(result.xhr) {
@@ -85,26 +101,28 @@ function Fileupload(element) {
 						});
 					} else {
 						var file = response.bundle.files[0];
-						$(result.previewElement).find(DROPZONE_PREVIEW_DATALINK_SELECTOR).append('<a href="/download/' + file.id + '"><span class="glyphicon glyphicon-download-alt"></span> ' + file.id + '</a>');
+						$(result.previewElement).find(DROPZONE_PREVIEW_DATALINK_SELECTOR).prepend('<a href="/download/' + file.id + '"><span class="glyphicon glyphicon-download-alt"></span></a>');
 						component.bundle.files.push(file);
 					}
 				}
 			});
 
 			component.dropzone.on('queuecomplete', function() {
+				//enable the send button
 				if(component.bundle.files.length > 0) {
 					$.post('/upload/bundle', {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
-						component.$completedContainer
-								 .html(component.completeTemplate)
-								 .addClass(DROPZONE_UPLOAD_COMPLETE_CLASS);
+						console.log("queue complete");
+						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
 						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <a href="/bundle/' + component.bundle.id + '/"><span class="glyphicon glyphicon-download-alt"></span> download all files as a zip archive</a></div>');
 						component.$completedContainer
 								 .find('form')
 								 .append('<input type="hidden" name="bundle" value="' + component.bundle.id + '" />');
 					});
 				} else {
+
+					$('.btn.loading').remove();
 					component.$completedContainer.html('<br /><p class="text-danger">Oh my... something went wrong while transferring your files. Please try again later.</p><a href="/" data-async data-target="hp">Return to homepage</a>');
 				}
 
