@@ -59,7 +59,7 @@ function Fileupload(element) {
 		var options = $.extend({
 			url: '/upload',
 			paramName: DROPZONE_PARAMETER,
-			dictDefaultMessage: '<span class="glyphicon glyphicon-download-alt" style="font-size: 3em;"></span><br /><br /> drop files here or click to select',
+			dictDefaultMessage: '<span class="glyphicon glyphicon-download-alt" style="font-size: 3em;"></span><br /><br /> drop all files here or click to select',
 			dictFallbackMessage: '',
 
 			previewTemplate: component.previewTemplate,

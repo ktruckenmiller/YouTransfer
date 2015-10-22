@@ -1,5 +1,5 @@
 <div class="dz-upload-complete {{ "hidden" if not (success and isPostback) }}">
-	<h2>where are these files headed?</h2>
+	<h2>want to send it to someone?</h2>
 	<form class="form form-group-sm" action="/send" method="POST">
 		{% if isPostback %}
 		<input type="hidden" name="bundle" value="{{ bundle.id }}" />
