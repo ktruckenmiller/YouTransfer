@@ -21,7 +21,7 @@ function Form(element) {
 	component.$element.ajaxForm({
 		success: function(response, status, xhr, $form) {
 			var content = $(response.output);
-
+			debugger;
 			var target = $('#' + element.getAttribute(FORM_TARGET_ATTRIBUTE)) || component.$element; 
 			target.replaceWith(content);
 

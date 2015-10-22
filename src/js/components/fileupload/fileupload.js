@@ -52,8 +52,6 @@ function Fileupload(element) {
 		component.$completedContainer.html(component.completeTemplate).addClass(DROPZONE_UPLOAD_COMPLETE_CLASS);
 		
 		component.$completedContainer.find('.btn.loading').attr('disabled', true);
-		console.log(component.$completedContainer.find('.btn.loading'));
-		// .find('.btn.loading').attr('disabled', 'disabled');
 	});
 	$.getJSON('/settings/dropzone').done(function(settings) {
 		var options = $.extend({
@@ -113,7 +111,6 @@ function Fileupload(element) {
 					$.post('/upload/bundle', {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
-						console.log("queue complete");
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
 						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <a href="/bundle/' + component.bundle.id + '/"><span class="glyphicon glyphicon-download-alt"></span> download all files as a zip archive</a></div>');
 						component.$completedContainer

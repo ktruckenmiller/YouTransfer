@@ -1,28 +1,42 @@
 <html>
-	<head></head>
+	<head>
+		<style>
+			body {
+				font-weight:100;
+			}
+		</style>
+	</head>
 	<body>
-		<h3>Hi,</h3>
-		<p>
-			{{ email.from }} wants to share file(s):
-		</p>
-		{% if email.body %}
-		<p>
-			{{ email.body }}
-		</p>
-		{% endif %}
-		<table>
-			{% for file in files %}
-				<tr>
-					<td><a href="{{ file.link }}">{{ file.name }} ({{ file.size }})</a></td>
-				</tr>
-			{% endfor %}
-		</table>
-		<p>
-			You can download each file individually by clicking on the file name.<br />
-			It is also possible to <a href="{{ bundle.link }}">download a collection of all files</a>.
-		</p>
-		<p>
-			<em><a href="http://mono-1.com">mono-1.com</a></em>
-		</p>
+		
+		<div style="width:100%;margin-bottom:20px;margin-left:-2px;display:block;">
+			<img style="width:240px;" alt="mono" src="https://s3.amazonaws.com/monosend/monosend_logo.png" />
+		</div>
+		<div style="font-family:Helvetica Neue;font-weight:300;padding:4px;">
+			<p>
+				<a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="mailto:{{ email.from }}">{{ email.from }}</a> wants to share file(s):
+			</p>
+			{% if email.body %}
+			<div style="padding:3%;background-color:#f8f8f9;margin-bottom:20px;text-indent:-4px;">
+				{{ email.body | safe }}
+			</div>
+			{% endif %}
+			<table style="border-spacing:0;margin-bottom:20px;">
+				<tr><td style="font-family:'Helvetica Neue';">download all of the files:</td></tr>
+				<tr><td><a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="{{ bundle.link }}">click here to download a zip file</a></td></tr>
+			</table>
+
+			<table style="border-spacing:0;">
+				<tr><td style="font-family:'Helvetica Neue';">you can also download individual files:</td></tr>
+				{% for file in files %}
+					<tr style="padding-top:4px;padding-bottom:4px;">
+						<td><a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="{{ file.link }}">{{ file.name }}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+			<br><br><br>
+			<p>
+				<a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="http://mono-1.com">mono-1.com</a>
+			</p>
+		</div>
 	</body>
 </html>

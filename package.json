@@ -1,6 +1,6 @@
 {
   "name": "monosend",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "monosend, the self-hosted file transfer solution",
   "main": "app.js",
   "engines": {
