@@ -1,7 +1,7 @@
 {% macro preview(bundle, isPostback) %}
 <div class="table table-striped dz-preview-template files {{ "hidden" if not isPostback }}">
 	{% if bundle %}
-		<div class="dz-preview-bundle"><span class="glyphicon glyphicon-download-alt"></span> <a href="/bundle/{{ bundle.id }}/">download all files as a zip archive</a></div>
+		<div class="dz-preview-bundle"><a href="/bundle/{{ bundle.id }}/">click here to download all files as a zip archive</a></div>
 		{% for file in bundle.files %}
 			{{ previewItem(file, isPostback) }}
 		{% endfor %}
@@ -17,7 +17,7 @@
 			<span class="text-success" data-dz-link>
 				{%if isPostback %}
 					<a href="/download/{{ file.id }}/">
-						<span class="glyphicon glyphicon-download-alt"></span>
+						<span class="glyphicon glyphicon-link"></span>
 					</a>
 				{% endif %}
 			</span>

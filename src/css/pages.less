@@ -119,12 +119,13 @@
 }
 .hp .dz-preview-bundle {
 	padding-left:20px;
-	.glyphicon-download-alt {
+	.glyphicon-link {
 		margin-right:6px;
 	}
 }
 .hp .dz-preview-template {
 	background-color:rgb(248,248,249);
+	color:@dark_gray;
 	margin-top: 25px;
 	> div {
 		position:relative;
@@ -158,10 +159,8 @@
 .hp {
 	.dropzone.dz-files-added {
 		display:block;
-		.text-success {
-			.glyphicon {
-				margin-right:6px;
-			}
+		.glyphicon-link {
+			margin-right:10px;
 		}
 		.dz-preview-template {
 			a {
@@ -169,15 +168,14 @@
 			}
 			margin-bottom:0px;
 			.dz-preview-description {
-				padding: 9px 20px 6px 20px;
+				color:@dark_gray;
+				padding: 9px 20px 6px 20px;    
+				line-height: 24px;
 			}
 		}
 	}
 	.dz-message {
-		color:@dark_gray;
-		.glyphicon {
-			color:@blue;
-		}
+		color:@blue;
 
 	}
 	.dz-preview-template.table .dz-preview-item .dz-preview-progress {

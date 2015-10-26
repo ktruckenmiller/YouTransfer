@@ -99,8 +99,13 @@ function Fileupload(element) {
 						});
 					} else {
 						var file = response.bundle.files[0];
-						$(result.previewElement).find(DROPZONE_PREVIEW_DATALINK_SELECTOR).prepend('<a href="/download/' + file.id + '"><span class="glyphicon glyphicon-download-alt"></span></a>');
+						$(result.previewElement).find(DROPZONE_PREVIEW_DATALINK_SELECTOR).prepend('<span data-link="download/' + file.id + '" class="glyphicon glyphicon-link"></span>');
 						component.bundle.files.push(file);
+						var $link = $(result.previewElement).find('.glyphicon-link');
+						$link.on('click', function() {
+							copyToClipboard($link);
+						});
+						
 					}
 				}
 			});
@@ -112,10 +117,15 @@ function Fileupload(element) {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
-						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <a href="/bundle/' + component.bundle.id + '/"><span class="glyphicon glyphicon-download-alt"></span> download all files as a zip archive</a></div>');
+						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to zip file</div>');
 						component.$completedContainer
 								 .find('form')
 								 .append('<input type="hidden" name="bundle" value="' + component.bundle.id + '" />');
+
+
+						$('.dz-preview-bundle .glyphicon').on('click',  function(e) {
+							copyToClipboard($(this));
+						});
 					});
 				} else {
 
@@ -145,6 +155,62 @@ $(document).on('xhr.loaded', function(event, element, target) {
 	});
 });
 
+function copyToClipboard($glyphicon) {
+	console.log("copy to clipboard");
+	var $input = $("<input />");
+	var url = $glyphicon[0].baseURI + $glyphicon.data('link');
+
+	$('body').append($input);
+	
+	$input[0].value= url;
+	$input[0].select();
+	var once = _.once(alertMessage);
+	try {
+		var successful = document.execCommand('copy');
+		once(successful, $input);
+	}catch(err) {
+		once(false, $input);
+
+		console.log('Oops, unable to copy');
+	}
+}
+function alertMessage(msg, $input) {
+	console.log(msg);
+	var div = document.createElement("div");
+	$(div).addClass('my_alert');
+	document.body.appendChild(div);
+	
+	if(msg) {
+		$input.css({
+			left: "-9999em",
+			position: "fixed"
+		});
+		$(div).html("<p>copied to clipboard!</p>");
+		setTimeout(function() {
+			$(div).fadeOut(function() {
+				$(div).remove();
+				$input.remove();
+			});
+		}, 1000);
+	}else {
+		$(div).append($input);
+		$(div).append("<a class='glyphicon glyphicon-remove'></a>").on('click', '.glyphicon-remove', function() {
+			$(div).fadeOut(function() {
+				$(div).remove();
+				 $input.remove();
+			});
+		});
+	}
+}
+
+
+
+
+
+
 // ------------------------------------------------------------------------------------------ Component Exposure
+
+
+
 
 module.exports = Fileupload;
