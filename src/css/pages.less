@@ -105,7 +105,7 @@
 	
 	h2 {
 		font-size:14px;
-
+		color:@blue;
 	}
 }
 
@@ -122,6 +122,14 @@
 	.glyphicon-link {
 		margin-right:6px;
 	}
+	h3 {
+		font-size:24px;
+		margin-left:-16px;
+	}
+	p {
+		font-size:12px;
+		margin-left:-14px;
+	}
 }
 .hp .dz-preview-template {
 	background-color:rgb(248,248,249);
@@ -130,6 +138,11 @@
 	> div {
 		position:relative;
 		overflow:hidden;
+	}
+	.dz-preview-bundle {
+    	padding-top: 9px;
+    	padding-bottom: 13px;
+		margin:0;
 	}
 }
 .hp .dz-preview-item {
@@ -156,7 +169,21 @@
 		}
 	}
 }
+
 .hp {
+	.dropzone {
+		.glyphicon-download-alt {
+			&.drop-icon {
+				&:hover {
+					color:@blue;
+					background:white;
+				}
+			}
+		}
+		.click-to-select {
+			color:@steve_gray;
+		}
+	}
 	.dropzone.dz-files-added {
 		display:block;
 		.glyphicon-link {

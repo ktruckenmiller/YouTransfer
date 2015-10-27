@@ -10,6 +10,13 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100%;
 }
+a {
+	color:#0093d0;
+	&:hover {
+		text-decoration:none;
+		color:@dark_gray;
+	}
+}
 
 /*// ------------------------------------------------------------------------------------------ Header */
 
@@ -44,6 +51,7 @@ nav.navbar .navbar-brand {
 .glyphicon-link {
 	color:@steve_gray;
 	margin-right:7px;
+	margin-left:-6px;
 	padding:4px;
 	&.bundle {
 		color:@blue;

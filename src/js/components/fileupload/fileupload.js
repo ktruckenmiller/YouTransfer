@@ -57,7 +57,7 @@ function Fileupload(element) {
 		var options = $.extend({
 			url: '/upload',
 			paramName: DROPZONE_PARAMETER,
-			dictDefaultMessage: '<span class="glyphicon glyphicon-download-alt" style="font-size: 3em;"></span><br /><br /> drop all files here or click to select',
+			dictDefaultMessage: '<span class="glyphicon glyphicon-download-alt drop-icon" style="font-size: 3em;"></span><br /><br /> <span class="click-to-select">drop all files here or click to select</span>',
 			dictFallbackMessage: '',
 
 			previewTemplate: component.previewTemplate,
@@ -117,7 +117,7 @@ function Fileupload(element) {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
-						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to zip file</div>');
+						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
 						component.$completedContainer
 								 .find('form')
 								 .append('<input type="hidden" name="bundle" value="' + component.bundle.id + '" />');
