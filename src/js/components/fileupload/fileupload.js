@@ -50,7 +50,7 @@ function Fileupload(element) {
 	component.$completedContainer = $(DROPZONE_COMPLETED_CONTAINER_SELECTOR);
 	var displayEmailer = _.once(function() {
 		component.$completedContainer.html(component.completeTemplate).addClass(DROPZONE_UPLOAD_COMPLETE_CLASS);
-		
+
 		component.$completedContainer.find('.btn.loading').attr('disabled', true);
 	});
 	$.getJSON('/settings/dropzone').done(function(settings) {
@@ -83,11 +83,11 @@ function Fileupload(element) {
 						result.previewElement.classList.add("dz-filing");
 					}, 500);
 				}
-				
-				
+
+
 			});
 			component.dropzone.on("complete", function(result) {
-				
+
 				$(result.previewElement).find(DROPZONE_PREVIEW_DESCRIPTION_SELECTOR).removeClass('col-md-7');
 				$(result.previewElement).find(DROPZONE_PREVIEW_PROGRESS_SELECTOR).hide();
 				if(result.xhr) {
@@ -105,19 +105,27 @@ function Fileupload(element) {
 						$link.on('click', function() {
 							copyToClipboard($link);
 						});
-						
+
 					}
 				}
 			});
 
 			component.dropzone.on('queuecomplete', function() {
+				var fileSize = _.reduce(this.files, function(memo, val) {
+					return val.size + memo;
+				}, 0);
+				fileSize = fileSize / 1024 / 1024;
 				//enable the send button
 				if(component.bundle.files.length > 0) {
 					$.post('/upload/bundle', {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
-						$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
+						// if(fileSize < 2000) {
+							$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
+						// }
+
+
 						component.$completedContainer
 								 .find('form')
 								 .append('<input type="hidden" name="bundle" value="' + component.bundle.id + '" />');
@@ -161,7 +169,7 @@ function copyToClipboard($glyphicon) {
 	var url = $glyphicon[0].baseURI + $glyphicon.data('link');
 
 	$('body').append($input);
-	
+
 	$input[0].value= url;
 	$input[0].select();
 	var once = _.once(alertMessage);
@@ -179,7 +187,7 @@ function alertMessage(msg, $input) {
 	var div = document.createElement("div");
 	$(div).addClass('my_alert');
 	document.body.appendChild(div);
-	
+
 	if(msg) {
 		$input.css({
 			left: "-9999em",
