@@ -18,10 +18,10 @@
 	.container {
 		max-width:960px;
 	}
-	
+
 }
 
-.hp::after, 
+.hp::after,
 .hp::before {
     content: " ";
     display: table;
@@ -71,12 +71,12 @@
     background-color:transparent;
     border:2px dashed @gray;
     border-radius:0;
-	
+
 
 	@media (min-width:768px) {
 		max-width: 48%;
 	}
-    
+
 
 }
 .hp .dz-completed-container {
@@ -89,7 +89,7 @@
 	width:100%;
 	float:left;
 
-	
+
 	text-align:left;
 
 	@media (min-width:768px) {
@@ -107,7 +107,7 @@
 		color:white;
 		text-transform:lowercase;
 	}
-	
+
 	h2 {
 		font-size:14px;
 		color:@blue;
@@ -115,6 +115,7 @@
 }
 
 .hp .dz-files-added {
+	min-height:auto;
 	border:2px solid @off_gray;
 	border-radius:1px;
 	margin-top: 45px;
@@ -201,7 +202,7 @@
 			margin-bottom:0px;
 			.dz-preview-description {
 				color:@dark_gray;
-				padding: 9px 20px 6px 20px;    
+				padding: 9px 20px 6px 20px;
 				line-height: 24px;
 			}
 		}
@@ -252,8 +253,8 @@
 	border-top: 1px solid #ddd;
 }
 
-/* 	
-Visual feedback for non-javascript users. 
+/*
+Visual feedback for non-javascript users.
 Unfortunately IE only supports :valid psuedo selectors on input elements.
 For those users the experience will be less intuitive.
 */
@@ -283,7 +284,7 @@ For those users the experience will be less intuitive.
 }
 
 .hp .fallback form label {
-	margin-bottom: 0;	
+	margin-bottom: 0;
 }
 
 /*// ------------------------------------------------------------------------------------------ Download */
@@ -316,7 +317,7 @@ For those users the experience will be less intuitive.
 	}
 }
 
-.settings::after, 
+.settings::after,
 .settings::before {
     content: " ";
     display: table;

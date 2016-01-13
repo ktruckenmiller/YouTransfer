@@ -29,6 +29,7 @@ var DROPZONE_ACTIONS_ADD_SELECTOR = '.dz-action-add';
 // ------------------------------------------------------------------------------------------ Component Definition
 
 function Fileupload(element) {
+
 	var component = this;
 	component.$element = $(element);
 	component.$element.addClass(DROPZONE_CLASS);
@@ -54,6 +55,7 @@ function Fileupload(element) {
 		component.$completedContainer.find('.btn.loading').attr('disabled', true);
 	});
 	$.getJSON('/settings/dropzone').done(function(settings) {
+
 		var options = $.extend({
 			url: '/upload',
 			paramName: DROPZONE_PARAMETER,
@@ -64,16 +66,34 @@ function Fileupload(element) {
 			previewsContainer: component.previewContainer,
 			clickable: DROPZONE_ACTIONS_ADD_SELECTOR
 		}, settings.dropzone);
-
 		component.dropzone = new Dropzone(element, options);
 
 		if(!settings.dropzone.forceFallback) {
-			component.dropzone.on("addedfile", function() {
+			component.dropzone.on("addedfile", function(file, filename) {
+
 				component.$element.addClass("dz-files-added");
+				function truncateFilename (filename) {
+					if(filename) {
+						if(filename.length > 42) {
+						  var ext = filename.slice(-4);
+						  var name = filename.substring(0, filename.length - 4);
+						  name = name.slice(0, 38);
+							console.log(name+ ext);
+						  return name + ext;
+						}else {
+							console.log(filename);
+							return filename;
+						}
+
+					}
+				}
+				var filename = truncateFilename(file.name);
+				component.$element.find('.dz-filename').html(filename);
 			});
 
 			component.dropzone.on("sending", function(file, xhr, formData) {
 				//disable the send button
+
 				formData.append("bundle", component.bundle.id);
 				displayEmailer();
 			});
@@ -92,6 +112,7 @@ function Fileupload(element) {
 				$(result.previewElement).find(DROPZONE_PREVIEW_PROGRESS_SELECTOR).hide();
 				if(result.xhr) {
 					var response = JSON.parse(result.xhr.response);
+
 					if(response.errors.length > 0) {
 						$.each(response.errors, function(i, error) {
 							$(result.previewElement).find(DROPZONE_PREVIEW_ERROR_MESSAGE_SELECTOR)
@@ -101,6 +122,8 @@ function Fileupload(element) {
 						var file = response.bundle.files[0];
 						$(result.previewElement).find(DROPZONE_PREVIEW_DATALINK_SELECTOR).prepend('<span data-link="download/' + file.id + '" class="glyphicon glyphicon-link"></span>');
 						component.bundle.files.push(file);
+
+
 						var $link = $(result.previewElement).find('.glyphicon-link');
 						$link.on('click', function() {
 							copyToClipboard($link);
@@ -111,7 +134,8 @@ function Fileupload(element) {
 			});
 
 			component.dropzone.on('queuecomplete', function() {
-				var fileSize = _.reduce(this.files, function(memo, val) {
+				var files = this.files;
+				var fileSize = _.reduce(files, function(memo, val) {
 					return val.size + memo;
 				}, 0);
 				fileSize = fileSize / 1024 / 1024;
@@ -121,8 +145,11 @@ function Fileupload(element) {
 						bundle: JSON.stringify(component.bundle)
 					}).done(function() {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
-						// if(fileSize < 2000) {
+						// Show the bundler file download if conditions are met
+						if(files.length !== 1 || files[0].type !== "application/zip" || fileSize > 2000) {
 							$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
+						}
+						// if(fileSize < 2000) {
 						// }
 
 
@@ -164,7 +191,6 @@ $(document).on('xhr.loaded', function(event, element, target) {
 });
 
 function copyToClipboard($glyphicon) {
-	console.log("copy to clipboard");
 	var $input = $("<input />");
 	var url = $glyphicon[0].baseURI + $glyphicon.data('link');
 
@@ -179,11 +205,9 @@ function copyToClipboard($glyphicon) {
 	}catch(err) {
 		once(false, $input);
 
-		console.log('Oops, unable to copy');
 	}
 }
 function alertMessage(msg, $input) {
-	console.log(msg);
 	var div = document.createElement("div");
 	$(div).addClass('my_alert');
 	document.body.appendChild(div);

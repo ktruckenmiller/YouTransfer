@@ -7,7 +7,7 @@
 		</style>
 	</head>
 	<body>
-		
+
 		<div style="width:100%;margin-bottom:20px;margin-left:-2px;display:block;">
 			<img style="width:240px;" alt="mono" src="https://s3.amazonaws.com/monosend/monosend_logo.png" />
 		</div>
@@ -20,21 +20,29 @@
 				{{ email.body | safe }}
 			</div>
 			{% endif %}
+
+			{% if bundle.link %}
 			<table style="border-spacing:0;margin-bottom:20px;">
 				<tr><td style="font-family:'Helvetica Neue';">download all of the files:</td></tr>
 				<tr><td><a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="{{ bundle.link }}">click here to download a zip file</a></td></tr>
 			</table>
+			{% endif %}
 
 			<table style="border-spacing:0;">
+				{%if bundle.link %}
 				<tr><td style="font-family:'Helvetica Neue';">you can also download individual files:</td></tr>
+				{% else %}
+				<tr><td style="font-family:'Helvetica Neue';">download individual files:</td></tr>
+				{% endif %}
+
 				{% for file in files %}
 					<tr style="padding-top:4px;padding-bottom:4px;">
-						<td><a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="{{ file.link }}">{{ file.name }}</a></td>
+						<td><a style="color:#0093df;font-family:'Helvetica Neue';text-decoration:none;" href="{{ file.link }}">{{ file.name }} ({{file.filesize}})</a></td>
 					</tr>
 				{% endfor %}
 			</table>
 			<br>
-			
+
 			<br><br>
 			<p>
 				<p style="font-size:10px;font-family:'Helvetica Neue';">Our file retention policy is set at 10 days.<br>After that period, these files won't be available for download.</p>
