@@ -1,6 +1,6 @@
 {
   "name": "monosend",
-  "version": "1.1.3",
+  "version": "1.1.8",
   "description": "monosend, the self-hosted file transfer solution",
   "main": "app.js",
   "engines": {
@@ -26,6 +26,7 @@
     "nodemailer-smtp-transport": "^2.0.0",
     "nodemailer-wellknown": "^0.1.7",
     "nunjucks": "^1.3.4",
+    "q": "^1.4.1",
     "restify": "^2.8.2",
     "restify-cookies": "^0.1.1",
     "url": "^0.11.0",

@@ -5,6 +5,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var uuid = require('uuid');
 var Dropzone = require('dropzone');
+
 Dropzone.autoDiscover = false;
 
 // ------------------------------------------------------------------------------------------ Component Variables
@@ -25,8 +26,9 @@ var DROPZONE_UPLOAD_COMPLETE_SELECTOR = '.' + DROPZONE_UPLOAD_COMPLETE_CLASS;
 var DROPZONE_COMPLETED_CONTAINER_SELECTOR = '.dz-completed-container';
 
 var DROPZONE_ACTIONS_ADD_SELECTOR = '.dz-action-add';
-
+var monoites;
 // ------------------------------------------------------------------------------------------ Component Definition
+
 
 function Fileupload(element) {
 
@@ -51,9 +53,62 @@ function Fileupload(element) {
 	component.$completedContainer = $(DROPZONE_COMPLETED_CONTAINER_SELECTOR);
 	var displayEmailer = _.once(function() {
 		component.$completedContainer.html(component.completeTemplate).addClass(DROPZONE_UPLOAD_COMPLETE_CLASS);
-
 		component.$completedContainer.find('.btn.loading').attr('disabled', true);
+
+		if(!_.isEmpty(monoites)) {
+			// setup typeahead
+			var $fromTypeAhead = $('#from');
+			$('#to').tagsInput({
+				'width':'100%',
+				'height': 'auto',
+				'defaultText':'their email',
+				'placeholderColor': 'rgb(153,153,153)'
+			});
+			//
+			var substringMatcher = function(strs) {
+			  return function findMatches(q, cb) {
+			    var matches, substrRegex;
+
+			    // an array that will be populated with substring matches
+			    matches = [];
+
+			    // regex used to determine if a string contains the substring `q`
+			    substrRegex = new RegExp(q, 'i');
+
+			    // iterate through the pool of strings and for any string that
+			    // contains the substring `q`, add it to the `matches` array
+			    $.each(strs, function(i, str) {
+			      if (substrRegex.test(str)) {
+			        matches.push(str);
+			      }
+			    });
+
+			    cb(matches);
+			  };
+			};
+			$fromTypeAhead.typeahead({
+				minLength: 1,
+				highlight: true
+			}, {
+				name: 'emails',
+				source: substringMatcher(monoites)
+			});
+		}
+		var $form = component.$completedContainer.find('form');
+		var $button = $form.find('input[type=text]');
+		$button.on('keypress', function(e) {
+			if ( e.which == 13 ) {
+	        $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
+	        return false;
+	    }
+		});
 	});
+
+
+
+
+
+
 	$.getJSON('/settings/dropzone').done(function(settings) {
 
 		var options = $.extend({
@@ -69,33 +124,63 @@ function Fileupload(element) {
 		component.dropzone = new Dropzone(element, options);
 
 		if(!settings.dropzone.forceFallback) {
+			var boston = component.$element.find('.dz-filename');
 			component.dropzone.on("addedfile", function(file, filename) {
-
 				component.$element.addClass("dz-files-added");
 				function truncateFilename (filename) {
-					if(filename) {
-						if(filename.length > 42) {
-						  var ext = filename.slice(-4);
-						  var name = filename.substring(0, filename.length - 4);
+					var file_name = _.clone(filename);
+					if(file_name) {
+						if(file_name.length > 42) {
+						  var ext = file_name.slice(-4);
+						  var name = file_name.substring(0, file_name.length - 4);
 						  name = name.slice(0, 38);
-							console.log(name+ ext);
 						  return name + ext;
 						}else {
-							console.log(filename);
-							return filename;
+							return file_name;
 						}
 
 					}
 				}
-				var filename = truncateFilename(file.name);
-				component.$element.find('.dz-filename').html(filename);
+				boston.html(truncateFilename(file.name));
 			});
+
+			/** setup typahead with mono if it exists **/
+			function getUsers() {
+				var deferred = $.Deferred();
+				$.get({
+					url: "http://52.33.143.19:3333/users",
+					success: function(res) {
+							deferred.resolve(res);
+					},
+					error: function(err) {
+						deferred.reject();
+					}
+
+				});
+
+				return deferred.promise();
+			}
+
+			$.when(getUsers()).then(function(res) {
+				// success
+				monoites = res.map(function(val, key) {
+					return val.email;
+				});
+			});
+
+
+
+
+
 
 			component.dropzone.on("sending", function(file, xhr, formData) {
 				//disable the send button
 
 				formData.append("bundle", component.bundle.id);
 				displayEmailer();
+
+
+
 			});
 			component.dropzone.on("uploadprogress", function(result, progress) {
 				if(progress === 100) {
@@ -146,7 +231,12 @@ function Fileupload(element) {
 					}).done(function() {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
 						// Show the bundler file download if conditions are met
-						if(files.length !== 1 || files[0].type !== "application/zip" || fileSize > 2000) {
+						var isQuicktime = _.find(files, function(val) {
+							console.log(val.type);
+							return val.type.indexOf('video') > -1;
+						})
+						if((files.length === 1 && files[0].type === "application/zip") || isQuicktime) {
+						}else {
 							$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
 						}
 						// if(fileSize < 2000) {
@@ -156,6 +246,8 @@ function Fileupload(element) {
 						component.$completedContainer
 								 .find('form')
 								 .append('<input type="hidden" name="bundle" value="' + component.bundle.id + '" />');
+
+
 
 
 						$('.dz-preview-bundle .glyphicon').on('click',  function(e) {

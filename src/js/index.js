@@ -8,3 +8,5 @@ require('./components/jsonly/jsonly.js');
 require('./components/select-section/select-section.js');
 require('./components/tabs/tabs.js');
 require('./components/templateEditor/templateEditor.js');
+require('./components/typeahead/typeahead.js');
+require('./components/typeahead/tags.js');
