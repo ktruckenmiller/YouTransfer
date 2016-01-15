@@ -232,10 +232,11 @@ function Fileupload(element) {
 						component.$completedContainer.find('.btn.loading').removeClass('loading').attr('disabled', false).html("send");
 						// Show the bundler file download if conditions are met
 						var isQuicktime = _.find(files, function(val) {
-							console.log(val.type);
+
 							return val.type.indexOf('video') > -1;
 						})
-						if((files.length === 1 && files[0].type === "application/zip") || isQuicktime) {
+						console.log(files[0].type);
+						if((files.length === 1 && files[0].type === "application/zip") || isQuicktime || (files.length === 1 && files[0].type === 'application/x-tar')) {
 						}else {
 							$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
 						}
