@@ -124,24 +124,27 @@ function Fileupload(element) {
 		component.dropzone = new Dropzone(element, options);
 
 		if(!settings.dropzone.forceFallback) {
-			var boston = component.$element.find('.dz-filename');
+
 			component.dropzone.on("addedfile", function(file, filename) {
 				component.$element.addClass("dz-files-added");
-				function truncateFilename (filename) {
-					var file_name = _.clone(filename);
-					if(file_name) {
-						if(file_name.length > 42) {
-						  var ext = file_name.slice(-4);
-						  var name = file_name.substring(0, file_name.length - 4);
-						  name = name.slice(0, 38);
-						  return name + ext;
-						}else {
-							return file_name;
-						}
+				var $file = component.$element.find('.dz-filename');
 
+				var truncateFilename = (function(str) {
+					var filename = str;
+					return function() {
+						if(filename) {
+							if(filename.length > 42) {
+							  var ext = filename.slice(-4);
+							  var name = filename.substring(0, filename.length - 4);
+							  name = name.slice(0, 38);
+							  return name + ext;
+							}else {
+								return filename;
+							}
+						}
 					}
-				}
-				boston.html(truncateFilename(file.name));
+				})(file.name);
+				$file.html(truncateFilename(file.name));
 			});
 
 			/** setup typahead with mono if it exists **/
@@ -235,14 +238,10 @@ function Fileupload(element) {
 
 							return val.type.indexOf('video') > -1;
 						})
-						console.log(files[0].type);
 						if((files.length === 1 && files[0].type === "application/zip") || isQuicktime || (files.length === 1 && files[0].type === 'application/x-tar')) {
 						}else {
 							$(DROPZONE_PREVIEW_TEMPLATE_SELECTOR).prepend('<div class="dz-preview-bundle"> <span data-link="bundle/' + component.bundle.id + '/" class="glyphicon glyphicon-link bundle"></span> link to .zip file</div>');
 						}
-						// if(fileSize < 2000) {
-						// }
-
 
 						component.$completedContainer
 								 .find('form')
