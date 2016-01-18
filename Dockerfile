@@ -1,7 +1,7 @@
 FROM node:0.12
 
 MAINTAINER Kevin Truckenmiller (kevin.truckenmiller@mono-1.com)
-LABEL version="1.2.1"
+LABEL version="1.2.2"
 
 VOLUME /opt/youtransfer/uploads
 
