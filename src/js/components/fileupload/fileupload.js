@@ -151,7 +151,7 @@ function Fileupload(element) {
 			function getUsers() {
 				var deferred = $.Deferred();
 				$.get({
-					url: "http://52.33.143.19:3333/users",
+					url: "http://api.mono-1.com:3333/users",
 					success: function(res) {
 							deferred.resolve(res);
 					},
