@@ -28,6 +28,18 @@ var DROPZONE_COMPLETED_CONTAINER_SELECTOR = '.dz-completed-container';
 var DROPZONE_ACTIONS_ADD_SELECTOR = '.dz-action-add';
 var monoites;
 // ------------------------------------------------------------------------------------------ Component Definition
+var truncateFilename = function(filename) {
+	if(filename) {
+		if(filename.length > 42) {
+			var ext = filename.slice(-4);
+			var name = filename.substring(0, filename.length - 4);
+			name = name.slice(0, 38);
+			return name + ext;
+		}else {
+			return filename;
+		}
+	}
+}
 
 
 function Fileupload(element) {
@@ -127,23 +139,7 @@ function Fileupload(element) {
 
 			component.dropzone.on("addedfile", function(file, filename) {
 				component.$element.addClass("dz-files-added");
-				var $file = component.$element.find('.dz-filename');
-
-				var truncateFilename = (function(str) {
-					var filename = str;
-					return function() {
-						if(filename) {
-							if(filename.length > 42) {
-							  var ext = filename.slice(-4);
-							  var name = filename.substring(0, filename.length - 4);
-							  name = name.slice(0, 38);
-							  return name + ext;
-							}else {
-								return filename;
-							}
-						}
-					}
-				})(file.name);
+				var $file = $(file.previewElement).find('.dz-filename');
 				$file.html(truncateFilename(file.name));
 			});
 
@@ -151,7 +147,7 @@ function Fileupload(element) {
 			function getUsers() {
 				var deferred = $.Deferred();
 				$.get({
-					url: "http://api.mono-1.com:3333/users",
+					url: "http://52.38.235.158:3333/users",
 					success: function(res) {
 							deferred.resolve(res);
 					},
@@ -326,7 +322,6 @@ function alertMessage(msg, $input) {
 		});
 	}
 }
-
 
 
 
