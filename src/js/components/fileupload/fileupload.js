@@ -147,7 +147,7 @@ function Fileupload(element) {
 			function getUsers() {
 				var deferred = $.Deferred();
 				$.get({
-					url: "http://52.38.235.158:3333/users",
+					url: "https://api.mono-1.com/users",
 					success: function(res) {
 							deferred.resolve(res);
 					},
@@ -162,9 +162,9 @@ function Fileupload(element) {
 
 			$.when(getUsers()).then(function(res) {
 				// success
-				monoites = res.map(function(val, key) {
-					return val.email;
-				});
+				monoites = res.reduce(function(memo, val) {
+					return memo.concat(val.email_aliases);
+				},[]);
 			});
 
 
